@@ -1,0 +1,4 @@
+version=3
+opts="uversionmangle=s/%7E/~/" https://launchpad.net/keystone/+download https://launchpad.net/keystone/.*/.*/.*/keystone-(.*)\.tar\.gz
+http://tarballs.openstack.org/keystone/ keystone-(\d.*).tar.gz
+

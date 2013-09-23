@@ -1,0 +1,71 @@
+From 83838e8d52f4bb5dc0853d508156dbf59545505d Mon Sep 17 00:00:00 2001
+From: Chuck Short <chuck.short@canonical.com>
+Date: Thu, 22 Nov 2012 09:53:16 -0600
+Subject: [PATCH] Fix sql connection.
+
+Signed-off-by: Chuck Short <chuck.short@canonical.com>
+---
+ etc/keystone.conf.sample | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/etc/keystone.conf.sample b/etc/keystone.conf.sample
+index 13a7847..193d4cb 100644
+--- a/etc/keystone.conf.sample
++++ b/etc/keystone.conf.sample
+@@ -31,10 +31,10 @@
+ # debug = False
+ 
+ # Name of log file to output to. If not set, logging will go to stdout.
+-# log_file = keystone.log
++log_file = keystone.log
+ 
+ # The directory to keep log files in (will be prepended to --logfile)
+-# log_dir = /var/log/keystone
++log_dir = /var/log/keystone
+ 
+ # Use syslog for logging.
+ # use_syslog = False
+@@ -63,17 +63,17 @@
+ 
+ [sql]
+ # The SQLAlchemy connection string used to connect to the database
+-# connection = sqlite:///keystone.db
++connection = sqlite:////var/lib/keystone/keystone.db
+ 
+ # the timeout before idle sql connections are reaped
+ # idle_timeout = 200
+ 
+ [identity]
+-# driver = keystone.identity.backends.sql.Identity
++driver = keystone.identity.backends.sql.Identity
+ 
+ [catalog]
+ # dynamic, sql-based backend (supports API/CLI-based management commands)
+-# driver = keystone.catalog.backends.sql.Catalog
++driver = keystone.catalog.backends.sql.Catalog
+ 
+ # static, file-based backend (does *NOT* support any management commands)
+ # driver = keystone.catalog.backends.templated.TemplatedCatalog
+@@ -81,16 +81,16 @@
+ # template_file = default_catalog.templates
+ 
+ [token]
+-# driver = keystone.token.backends.kvs.Token
++driver = keystone.token.backends.kvs.Token
+ 
+ # Amount of time a token should remain valid (in seconds)
+ # expiration = 86400
+ 
+ [policy]
+-# driver = keystone.policy.backends.sql.Policy
++driver = keystone.policy.backends.sql.Policy
+ 
+ [ec2]
+-# driver = keystone.contrib.ec2.backends.kvs.Ec2
++driver = keystone.contrib.ec2.backends.kvs.Ec2
+ 
+ [ssl]
+ #enable = True
+-- 
+1.8.0
+

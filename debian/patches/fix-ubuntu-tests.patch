@@ -1,0 +1,49 @@
+Description: Fix test execution during package build
+ The keystoneclient testsuite includes a number of tests
+ for older version of keystone which are retrieved from
+ the upstream source repo during testing.
+ .
+ This is not possible during an offline package build so
+ the checkout and tests are disabled/skipped.
+Author: Chuck Short <zulcss@ubuntu.com>
+Author: James Page <james.page@ubuntu.com>
+Forwarded: not-needed
+
+--- a/tests/test_keystoneclient.py
++++ b/tests/test_keystoneclient.py
+@@ -35,10 +35,6 @@ class CompatTestCase(test.TestCase):
+     def setUp(self):
+         super(CompatTestCase, self).setUp()
+ 
+-        revdir = test.checkout_vendor(*self.get_checkout())
+-        self.add_path(revdir)
+-        self.clear_module('keystoneclient')
+-
+         self.load_backends()
+         self.load_fixtures(default_fixtures)
+ 
+@@ -1003,6 +999,16 @@ class KcMasterTestCase(CompatTestCase, K
+         client.tenants.list()
+ 
+ 
++def skipped(func):
++    from nose.plugins.skip import SkipTest
++
++    def _():
++        raise SkipTest("Test %s is skipped" % func.__name__)
++    _.__name__ = func.__name__
++    return _
++
++
++@skipped
+ class KcEssex3TestCase(CompatTestCase, KeystoneClientTests):
+     def get_checkout(self):
+         return KEYSTONECLIENT_REPO, 'essex-3'
+@@ -1101,6 +1107,7 @@ class KcEssex3TestCase(CompatTestCase, K
+         raise nose.exc.SkipTest('N/A')
+ 
+ 
++@skipped
+ class Kc11TestCase(CompatTestCase, KeystoneClientTests):
+     def get_checkout(self):
+         return KEYSTONECLIENT_REPO, '0.1.1'
